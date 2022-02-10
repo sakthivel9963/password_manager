@@ -1,29 +1,24 @@
-import React, { useState, useEffect } from 'react';
-import { ThemeSelector, ThemeToggle } from 'theme/themeSelector';
+import { CopyIcon } from '@chakra-ui/icons';
 import {
-  VStack,
-  Container,
+  Button,
   Center,
-  Heading,
-  Textarea,
   Checkbox,
   CheckboxGroup,
+  Flex,
   FormControl,
   FormLabel,
-  FormErrorMessage,
-  FormHelperText,
-  HStack,
+  Heading,
+  IconButton,
+  NumberDecrementStepper,
+  NumberIncrementStepper,
   NumberInput,
   NumberInputField,
   NumberInputStepper,
-  NumberIncrementStepper,
-  NumberDecrementStepper,
   useClipboard,
-  Button,
-  Flex,
-  IconButton,
+  VStack,
 } from '@chakra-ui/react';
-import { CopyIcon } from '@chakra-ui/icons';
+import React, { useEffect, useState } from 'react';
+import { ThemeSelector } from 'theme/themeSelector';
 import { alphabets, numbers, specialCharacters } from './constants';
 
 const Home = () => {
@@ -32,6 +27,7 @@ const Home = () => {
     'number',
     'upperCase',
     'lowerCase',
+    'specialCharacter',
   ]);
   const [password, setPassword] = useState('');
   const { hasCopied, onCopy } = useClipboard(password);
@@ -79,6 +75,12 @@ const Home = () => {
     passwordGenerator();
   }, [passwordLength, passwordCharacter]);
 
+  const getInputValue = (value) => {
+    const valueLength = value.split('').length;
+    if (value < 18 || value > 128) return;
+    setPasswordLength(value);
+  };
+
   return (
     <React.Fragment>
       <ThemeSelector />
@@ -120,7 +122,7 @@ const Home = () => {
               max={128}
               min={8}
               defaultValue={passwordLength}
-              onChange={(value) => setPasswordLength(value)}
+              onChange={(value) => getInputValue(value)}
             >
               <NumberInputField />
               <NumberInputStepper>
